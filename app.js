@@ -19,6 +19,8 @@ const http = require('http');
 const https = require('https');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
+const portHttp = 8080;
+const portHttps = 8443;
 
 // File system libraries
 const path = require('path');
@@ -108,6 +110,17 @@ app.use(expressValidator({
 // Connect flash - used to store/send messages to client
 app.use(flash());
 
+app.use(function(req, res, next) {
+  // Is true if the request is made via HTTPS
+  if(req.secure) {
+    next();
+  } else {
+    // Redirect to HTTPS
+    let host = req.headers.host;
+    res.redirect('https://' + host.substring(0, host.indexOf(':')) + portHttps + req.url);
+  }
+});
+
 // Global variables
 app.use(function(req, res, next) {
   /**
@@ -140,12 +153,16 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/error', errors)
 
+// Keep this as the bottom handler
+// Redirects if accessing a resource that does not exist
+app.get('*', function(req, res) {
+  res.redirect('/');
+});
+
 // Secure File serving, will not server if not authenticated above
 app.use(express.static(path.join(__dirname, 'secure')));
 
 // Boot up the WebIS and listen on the given ports
-const portHttp = 8080;
-const portHttps = 8443;
 http.createServer(app).listen(portHttp, () => {
   console.log('HTTP WebIS started.  Port: ' + portHttp);
 });
