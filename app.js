@@ -153,14 +153,14 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/error', errors)
 
+// Secure File serving, will not server if not authenticated above
+app.use(express.static(path.join(__dirname, 'secure')));
+
 // Keep this as the bottom handler
 // Redirects if accessing a resource that does not exist
 app.get('*', function(req, res) {
   res.redirect('/');
 });
-
-// Secure File serving, will not server if not authenticated above
-app.use(express.static(path.join(__dirname, 'secure')));
 
 // Boot up the WebIS and listen on the given ports
 http.createServer(app).listen(portHttp, () => {

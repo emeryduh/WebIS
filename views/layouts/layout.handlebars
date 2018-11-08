@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-  <title>ITEC 4020 F18 A2</title>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <!--Bootstap css-->
-  <link rel="stylesheet" href="/css/bootstrap.css" />
-  <link rel="stylesheet" href="/css/style.css" />
-</head>
-
 <!--
 onconetextmenu="return false" will prevent a context menu from appearing
 when right-clicking the page.
@@ -19,18 +9,29 @@ to select elements on the page
 onkeydown="..." will capture key events and filter our any use of the Ctrl key
 to prevent users from copy-pasting text
  -->
-<body oncontextmenu="return false" onselectstart="return false" onkeydown="if ((arguments[0] || window.event).ctrlKey) return false">
+<html oncontextmenu="return false" onselectstart="return false" onkeydown="if ((arguments[0] || window.event).ctrlKey) return false">
 
+<head>
+  <title>ITEC 4020 F18 A2</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <!--Bootstap css-->
+  <link rel="stylesheet" href="/css/bootstrap.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
   <noscript>
-      <style type="text/css">
-          .js-only {display:none;}
-      </style>
-      <div class="container">
-        <h2 class="page-header">Error!</h2>
-        <div>
+    <style type="text/css">
+      .js-only {
+        display: none;
+      }
+    </style>
+    <div class="container">
+      <h2 class="page-header">Error!</h2>
+      <div>
         You don't have Javascript enabled. Please enable it to use this site.
-        </div>
       </div>
+    </div>
   </noscript>
   <div class="container js-only no-print">
     <div class="header clearfix">
@@ -40,6 +41,7 @@ to prevent users from copy-pasting text
         <nav class="my-2 my-md-0 mr-md-3">
           {{#if user}}
             <a class="p-2 text-dark" href="/">Dashboard</a>
+            <a class="p-2 text-dark" href="/users/profile">My Profile</a>
             <a class="btn btn-outline-primary" href="/users/logout">Logout</a>
           {{else}}
             <a class="p-2 text-dark" href="/users/register">Register</a>
