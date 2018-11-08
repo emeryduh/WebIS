@@ -117,7 +117,7 @@ app.use(function(req, res, next) {
   } else {
     // Redirect to HTTPS
     let host = req.headers.host;
-    res.redirect('https://' + host.substring(0, host.indexOf(':')) + portHttps + req.url);
+    res.redirect('https://' + host.substring(0, host.indexOf(':')) + ':' + portHttps + req.url);
   }
 });
 
