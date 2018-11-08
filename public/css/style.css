@@ -4,6 +4,19 @@ body {
   padding-bottom: 20px;
 }
 
+/* Prevent images from being dragged, hovered, or clicked */
+img {
+  pointer-events: none;
+}
+
+@media print
+{
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
