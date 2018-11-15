@@ -19,8 +19,8 @@ const http = require('http');
 const https = require('https');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
-const portHttp = 8080;
-const portHttps = 8443;
+const portHttp = 8888;
+const portHttps = 9843;
 
 // File system libraries
 const path = require('path');
@@ -46,6 +46,9 @@ const db = mongoose.connection;
 const routes = require('./routes/index');
 const users = require('./routes/users');
 const errors = require('./routes/error');
+
+// Needed to create XML Documents
+const xmlbuilder = require('xmlbuilder');
 
 // SSL Certs for HTTPS
 const privateKey = fs.readFileSync('sslcert/key.pem', 'utf8');
@@ -110,6 +113,8 @@ app.use(expressValidator({
 // Connect flash - used to store/send messages to client
 app.use(flash());
 
+// This will be run on every request.  If it is detected that a request is made
+// using HTTP, it will isntead redirect to an https request.
 app.use(function(req, res, next) {
   // Is true if the request is made via HTTPS
   if(req.secure) {
@@ -121,7 +126,8 @@ app.use(function(req, res, next) {
   }
 });
 
-// Global variables
+// Global call
+// Every request will run everything contained in this app.use
 app.use(function(req, res, next) {
   /**
    * Response headers, this will prevent the browser from caching the page
@@ -148,10 +154,38 @@ app.use(function(req, res, next) {
   }
 });
 
-// Routes
+// Routes to pages
 app.use('/', routes);
 app.use('/users', users);
 app.use('/error', errors)
+
+// Serve the dynamically created XML page
+app.get('/xml', function(req, res) {
+  // Only show page if the user is authenticated
+  if(req.user) {
+    res.set('Content-Type', 'text/xml');
+
+    // Create the base XML node
+    let xmlRoot = xmlbuilder.create('user', {encoding: 'utf-8'});
+    xmlRoot.ele('name', req.user.username);
+    xmlRoot.ele('username', req.user.name);
+    xmlRoot.ele('email', req.user.email);
+
+    // Close the xml root
+    let xmlOutput = xmlRoot.end({pretty: true});
+
+    // Appending two root tags isn't possible with xmlbuilder
+    // Append the missing style stylesheet
+    var ss = '\n<?xml-stylesheet type="text/xsl" href="/xsl/stylesheet.xsl"?>';
+    var i = xmlOutput.indexOf(">") + 1;
+    let finalOutput = xmlOutput.slice(0, i) + ss + xmlOutput.slice(i, xmlOutput.length);
+
+    res.write(finalOutput);
+    res.end();
+  } else {
+    res.redirect('/');
+  }
+});
 
 // Secure File serving, will not server if not authenticated above
 app.use(express.static(path.join(__dirname, 'secure')));

@@ -4,6 +4,29 @@ body {
   padding-bottom: 20px;
 }
 
+/* Disable text selection */
+html,
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection for input areas */
+input,
+textarea {
+  -moz-user-select: text;
+}
+
+/* Default hidden context-menu (switches display by javascript) */
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+}
+
 /* Prevent images from being dragged, hovered, or clicked */
 img {
   pointer-events: none;
@@ -117,25 +140,26 @@ footer{
 .profile-usertitle {
   text-align: center;
   margin-top: 20px;
+
 }
 
 .profile-usertitle-name {
   color: #5a7391;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 600;
-  margin-bottom: 7px;
+  margin-bottom: 5px;
 }
 
 .profile-usertitle-username {
   color: #5b9bd1;
-  font-size: 16px;
+  font-size: 25px;
   font-weight: 600;
   margin-bottom: 7px;
 }
 
 .profile-usertitle-email {
   color: #767676;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
   margin-bottom: 7px;
 }
@@ -145,4 +169,18 @@ footer{
   padding: 20px;
   background: #fff;
   min-height: 460px;
+}
+
+.reg-img {
+  background-image: url('../images/secureweb.jpg');
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: bottom right;
+}
+
+.log-img {
+  background-image: url('../images/secureuser.png');
+  background-repeat: no-repeat;
+  background-size: 40%;
+  background-position: bottom right;
 }

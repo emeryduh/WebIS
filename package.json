@@ -26,7 +26,8 @@
     "mongoose": "*",
     "passport": "*",
     "passport-http": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "xmlbuilder": "^10.1.1"
   },
   "devDependencies": {}
 }
